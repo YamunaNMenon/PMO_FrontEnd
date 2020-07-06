@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { PmoUserComponent } from './components/pmo-user/pmo-user.component';
+import { ListFilter } from './list-filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    PmoUserComponent
+    PmoUserComponent,
+    ListFilter
   ],
   imports: [
     BrowserModule,
