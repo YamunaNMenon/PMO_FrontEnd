@@ -89,6 +89,9 @@ this.userService.addOrEditUser(user)
 getAllPmoUsers(): void{
 this.userService.getAllUsers()
   .subscribe(data => {
+    data.forEach(element => {
+  element.id = element.user_id;
+    });
     this.userList = data;
   });
 }

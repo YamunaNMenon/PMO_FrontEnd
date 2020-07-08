@@ -2,7 +2,9 @@
  * User
  */
 export interface User {
-    id: number;
+    manager_check: any;
+    user_id?: number;
+    id:number;
     firstName: string;
     lastName: string;
     employeeId: string;

@@ -8,6 +8,9 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { PmoUserComponent } from './components/pmo-user/pmo-user.component';
 import { ListFilter } from './list-filter.pipe';
+import { PmoProjectComponent } from './components/pmo-project/pmo-project.component';
+import { PmoAddtaskComponent } from './components/pmo-task/pmo-addtask/pmo-addtask.component';
+import { PmoViewtaskComponent } from './components/pmo-task/pmo-viewtask/pmo-viewtask.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { ListFilter } from './list-filter.pipe';
     HeaderComponent,
     FooterComponent,
     PmoUserComponent,
-    ListFilter
+    ListFilter,
+    PmoProjectComponent,
+    PmoAddtaskComponent,
+    PmoViewtaskComponent
   ],
   imports: [
     BrowserModule,
