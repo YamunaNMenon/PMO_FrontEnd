@@ -54,6 +54,9 @@ export class PmoProjectComponent implements OnInit {
   getAllProjects(): void {
     this.projectService.getAllProjects()
       .subscribe(data => {
+        data.forEach(element => {
+          element.id = element.project_id;
+        });
         this.projectList = data;
         this.getAllUsers();
       });
@@ -168,7 +171,7 @@ export class PmoProjectComponent implements OnInit {
       endDate: this.project.endDate,
       priority: this.project.priority,
       user: this.project.user.firstName + '  ' + this.project.user.lastName,
-      userId: this.project.user.id
+      userId: this.project.user.user_id
     };
     this.projectForm.setValue(editProject);
     this.setDatePickerValues(editProject.setDate);

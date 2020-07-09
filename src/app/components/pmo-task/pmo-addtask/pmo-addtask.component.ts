@@ -57,10 +57,10 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
   isParent = false;
 
   /** Search type of add task component */
-  searchType = 'task' ;
+  searchType = 'parentTask' ;
 
   /** Search project type of add task component */
-  searchProjectType = 'Project' ;
+  searchProjectType = 'project' ;
 
   /** Search user type of add task component */
   searchUserType = 'User' ;
@@ -233,11 +233,8 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
    * @param id Id
    */
   getTaskById(id: string): void{
-    this.taskService.getTaskById(id)
-    .subscribe(data => {
-      this.task = data;
+      this.task = JSON.parse(sessionStorage.getItem('currentTask'));
       this.setFormValues(this.task);
-    });
   }
 
   /**
@@ -339,6 +336,9 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
   getAllProjects(): void{
     this.projectService.getAllProjects()
       .subscribe(data => {
+        data.forEach(element => {
+          element.id = element.project_id;
+        });
         this.projectList = data;
       });
   }
@@ -360,8 +360,11 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
   getAllUsers(): void {
     this.userService.getAllUsers()
       .subscribe(data => {
-        this.userList = data.filter(dataElement =>  (dataElement.project === null || dataElement.isManager !== 1 ||
-        (this.project && dataElement.isManager === 1 && dataElement.projectData.id === this.project.id)));
+        data.forEach(element => {
+          element.id = element.user_id;
+        });
+        this.userList = data.filter(dataElement =>  (dataElement.project === null || dataElement.manager_check !== 1 ||
+        (this.project && dataElement.manager_check === 1 && dataElement.projectData.id === this.project.project_id)));
       });
   }
 

@@ -8,7 +8,8 @@ import { PmoAddtaskComponent } from './components/pmo-task/pmo-addtask/pmo-addta
 const routes: Routes = [
   {path: 'adduser', component: PmoUserComponent },
   {path: 'project', component: PmoProjectComponent },
-  { path: 'addTask', component: PmoAddtaskComponent }
+  { path: 'addTask', component: PmoAddtaskComponent },
+  { path: 'viewTask', component: PmoAddtaskComponent }
 ];
 
 @NgModule({
