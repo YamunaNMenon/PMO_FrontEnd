@@ -53,6 +53,7 @@ export class PmoViewtaskComponent implements OnInit {
      this.taskList = data;
    });
  }
+ 
 
  /**
   * Gets all projects

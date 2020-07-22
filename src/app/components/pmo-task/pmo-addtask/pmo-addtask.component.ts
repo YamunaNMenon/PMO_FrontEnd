@@ -67,6 +67,7 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
 
   /** Id  of add task component */
   id = '' ;
+  userListFromService: any;
 
 
   /**
@@ -207,7 +208,7 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
           priority: taskFormValue.priority,
           startDate: taskFormValue.startDate,
           endDate: taskFormValue.endDate,
-          user: this.user,
+          userId: this.user.id,
           status: taskFormValue.status
         };
         this.addTask(task);
@@ -234,7 +235,7 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
    */
   getTaskById(id: string): void{
       this.task = JSON.parse(sessionStorage.getItem('currentTask'));
-      this.setFormValues(this.task);
+      this.getAllUsers(parseInt(id, 10));
   }
 
   /**
@@ -253,13 +254,13 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
       parentTaskId: task.parentTask.id,
       startDate: new Date(task.startDate).toISOString().substr(0, 10),
       endDate: new Date(task.endDate).toISOString().substr(0, 10),
-      user: task.project.user ? task.project.user.firstName + ' ' + task.project.user.lastName : '',
-      userId: task.project.user ? task.project.user.id : '',
+      user: task.user ? task.user.firstName + ' ' + task.user.lastName : '',
+      userId: task.user ? task.user.id : '',
       status: task.status
     };
     this.taskForm.setValue(formValues);
     this.project = task.project;
-    this.user = task.project.user;
+    this.user = task.user;
     this.parentTask = task.parentTask;
   }
 
@@ -270,15 +271,15 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
   addTask(task: Task): void {
     this.taskService.addOrUpdateTask(task)
     .subscribe(res => {
-      const user =  JSON.parse(JSON.stringify(task.user));
-      const projectInfo = JSON.parse(JSON.stringify(task.project));
-      const taskCopy = JSON.parse(JSON.stringify(task));
-      taskCopy.id = res;
-      delete taskCopy.project;
-      delete taskCopy.user;
-      user.projectData = projectInfo;
-      user.task = taskCopy;
-      this.userService.addOrEditUser(user) .subscribe(result => { });
+      // const user =  JSON.parse(JSON.stringify(task.user));
+      // const projectInfo = JSON.parse(JSON.stringify(task.project));
+      // const taskCopy = JSON.parse(JSON.stringify(task));
+      // taskCopy.id = res;
+      // delete taskCopy.project;
+      // delete taskCopy.user;
+      // user.projectData = projectInfo;
+      // user.task = taskCopy;
+      // this.userService.addOrEditUser(user) .subscribe(result => { });
       this.resetForm();
     });
   }
@@ -357,14 +358,20 @@ export class PmoAddtaskComponent implements OnInit, OnDestroy {
   /**
    * Gets all users
    */
-  getAllUsers(): void {
+  getAllUsers(userid?: number): void {
     this.userService.getAllUsers()
       .subscribe(data => {
         data.forEach(element => {
           element.id = element.user_id;
         });
-        this.userList = data.filter(dataElement =>  (dataElement.project === null || dataElement.manager_check !== 1 ||
-        (this.project && dataElement.manager_check === 1 && dataElement.projectData.id === this.project.project_id)));
+        this.userListFromService = data;
+        this.userList = data.filter(dataElement =>  (dataElement.projectId === null || dataElement.isManager !== 1 ||
+          (this.project && dataElement.isManager === 1 && dataElement.projectId === this.project.id)));
+          if (this.submitButtonText === 'Update' && userid) {
+            this.task.user = this.userListFromService.find(userElement => userElement.taskId === userid);
+            this.setFormValues(this.task);
+          }
+    
       });
   }
 

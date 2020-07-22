@@ -29,5 +29,5 @@ export class TaskServiceURLS {
   
     public static get SAVE_UPDATE_PARENT_TASK(): string { return '/pm-project/parentTask/saveUpdateParentTask'; }
   
-    public static get GET_ALL_PARENT_TASKS(): string { return '/parentTask/getAllParentTasks'; }
+    public static get GET_ALL_PARENT_TASKS(): string { return '/pm-project/parentTask/getAllParentTasks'; }
 }

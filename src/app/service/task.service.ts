@@ -4,6 +4,7 @@ import { Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Task, ParentTask } from '../models/task';
 import { TaskServiceURLS } from '../constants/serviceURL';
+import { map } from 'rxjs/operators';
   
 
 const baseUrl = environment.apiUrl;
@@ -32,8 +33,13 @@ export class TaskService {
    * @returns all tasks
    */
   getAllTasks(): Observable<any>{
-    const getAllTasksUrl = baseUrl + TaskServiceURLS.GET_ALL_TASKS;
-    return this.http.get(getAllTasksUrl);
+    //const getAllTasksUrl = baseUrl + TaskServiceURLS.GET_ALL_TASKS;
+   // return this.http.get(getAllTasksUrl);
+   const getAllTasksUrl = baseUrl + TaskServiceURLS.GET_ALL_TASKS;
+   return this.http.get(getAllTasksUrl).pipe(
+     map((resp: any) => this.getTaskData(resp))
+   );
+
   }
 
   /**
@@ -63,5 +69,23 @@ export class TaskService {
   getAllParentTasks(): Observable<any>{
     const getAllParentTasksUrl = baseUrl + TaskServiceURLS.GET_ALL_PARENT_TASKS;
     return this.http.get(getAllParentTasksUrl);
+  }
+
+  getTaskData(response: any): any {
+    const tasks: Task[] = [];
+
+    response.forEach(taskElement => {
+      if (!taskElement.parentTask){
+        taskElement.parentTask = {
+          id: '',
+          parentTask: ''
+        };
+      }
+      if(taskElement.project) {
+      taskElement.project.id = taskElement.project.project_id;
+      }
+      tasks.push(taskElement);
+    });
+    return tasks;
   }
 }
