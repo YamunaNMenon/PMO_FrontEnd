@@ -59,11 +59,11 @@ export class ProjectService {
       endDate: projectElement.endDate,
       priority: projectElement.priority,
       id:projectElement.id,
-      user: projectElement.user && projectElement.user.length >0  ? projectElement.user.find(userElement => userElement.manager_check === 1) : {},
+      // user: projectElement.user && projectElement.user.length >0  ? projectElement.user.find(userElement => userElement.manager_check === 1) : {},
       noOfTasks: projectElement.tasks ? projectElement.tasks.length : 0,
       noOfCompletedTask: projectElement.tasks ? projectElement.tasks.find(taskElement => taskElement.status === 1) : 0
     };
-    project.user.id = project.user.user_id;
+    // project.user.id = project.user.user_id;
     projects.push(project);
   });
   return projects;

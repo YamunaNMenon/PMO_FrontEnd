@@ -12,6 +12,7 @@ export interface Task {
     priority: number;
     status: any;
     user?: any;
+    userId?: number;
     userEntity?: any;
   }
   

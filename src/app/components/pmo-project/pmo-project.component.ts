@@ -26,6 +26,7 @@ export class PmoProjectComponent implements OnInit {
   userSearch: string;
   user: User;
   project: Project;
+  userListFromService: User[];
 
   constructor(private formBuilder: FormBuilder,
               private projectService: ProjectService,
@@ -71,6 +72,7 @@ export class PmoProjectComponent implements OnInit {
         data.forEach(element => {
           element.id = element.user_id;
         });
+        this.userListFromService = data;
         this.userList = data.filter(dataElement => dataElement.manager_check !== 1);
       });
   }
@@ -91,7 +93,7 @@ export class PmoProjectComponent implements OnInit {
         startDate: new Date(projectFormValue.startDate),
         endDate: new Date(projectFormValue.endDate),
         priority: projectFormValue.priority === null ? 0 : projectFormValue.priority,
-        user : [this.user]
+        userId : this.user.id
       };
       this.saveOruUpdateProject(project);
     }
@@ -158,9 +160,12 @@ export class PmoProjectComponent implements OnInit {
    * @param project ProjectData
    */
   editProject(project: Project): void {
-    this.previousManager = project.user;
+    // this.previousManager = project.user;
+    this.previousManager = this.userListFromService.find(userElement => userElement.projectId === project.id
+      && userElement.manager_check === 1);
     this.project = project;
-    this.user = project.user;
+    this.project.user = this.previousManager;
+    this.user = this.previousManager;
     this.submitButtonText = 'Update';
     // console.log(project);
     const editProject = {
